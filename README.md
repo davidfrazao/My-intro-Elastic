@@ -11,29 +11,29 @@ Elasticsearch training
 # During 
 - 6 Hours
 
-# 01 - What is Elasticsearch?
+## 01 - What is Elasticsearch?
 
-# 02 - How to write into Elasticsearch
+## 02 - How to write into Elasticsearch
 
-# 03 - How to read fron Elasticsearh
+## 03 - How to read fron Elasticsearh
 
-# 04 - What is a cluster
+## 04 - What is a cluster
 
-# 05 - What is Shard
+## 05 - What is Shard
 
-# 06 - Mapping
+## 06 - Mapping
 
-# 07 - 
+## 07 - 
 
-# 08
+## 08
 
-# 09
+## 09
 
-# 10
+## 10
 
-# 11 
+## 11 
 
-# 12
+## 12
 
 06
 David Frazao
