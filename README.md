@@ -31,14 +31,7 @@ Vscode:
     - Cerebro 
     - ElasticVue
 
-## 02 - Function diagram of data flux as logs
-
-- Source
-- Collector
-- Transport
-- parsing
-- storage
-- visualization
+## [02 - Function diagram of data flux as logs](./md/02-Function-diagram-of-data-flux-as-logs.md)
 
 
 ![Log-flow](./images/log_flow.png)
