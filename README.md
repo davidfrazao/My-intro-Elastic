@@ -4,14 +4,20 @@ Elasticsearch training
 # Requirements:
 - OS : Windows 11
 - PC with 16 Gb RAM
-- WSL Ubuntu or Debian
+- WSL Ubuntu
 - Docker in WSL
 - Docker-compose
+- vscode 
+    - 
 
 # During 
 - 6 Hours
 
-## 01 - What is Elasticsearch?
+## 01 - What is Elasticsearch Model?
+
+![Elastic - model](./images/elastic-model.png)
+
+on this 
 
 ## 02 - How to write into Elasticsearch
 
