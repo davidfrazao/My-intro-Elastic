@@ -1,5 +1,7 @@
 # My-intro-Elastic
-Elasticsearch training
+Elasticsearch training 
+
+![Attention](./images/im_progress.png)
 
 # Requirements:
 OS:
