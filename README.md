@@ -40,11 +40,14 @@ Vscode:
 - storage
 - visualization
 
+
+![Log-flow](./images/log_flow.png)
+
 ## 03 - How to write into Elasticsearch
 
 Overall diagram.
 
-![Elastic - model](./images/elastic-model.png)
+![Elastic-model](./images/elastic-model.png)
 
 ## 04 - Unstructure and structure log
 
