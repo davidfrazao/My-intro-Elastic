@@ -1,0 +1,1 @@
+java -jar /root/luke/luke.jar

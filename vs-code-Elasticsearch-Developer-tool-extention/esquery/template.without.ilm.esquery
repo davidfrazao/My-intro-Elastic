@@ -1,0 +1,16 @@
+PUT _index_template/test-data-stream
+{
+  "priority": 500,
+  "template": {
+    "settings": {
+      "index": {
+        "mode": "standard"
+      }
+    }
+  },
+  "index_patterns": [
+    "test-data-stream*"
+  ],
+  "data_stream": {},
+  "allow_auto_create": true
+}

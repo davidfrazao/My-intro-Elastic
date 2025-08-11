@@ -1,0 +1,6 @@
+# log.level: debug
+xpack.monitoring.elasticsearch.hosts:
+- https://tls-private-CA-node-es-8-1:9200
+xpack.monitoring.elasticsearch.password: AHTgDg4jcT-kE06LuJ9-
+xpack.monitoring.elasticsearch.ssl.verification_mode: none
+xpack.monitoring.elasticsearch.username: elastic

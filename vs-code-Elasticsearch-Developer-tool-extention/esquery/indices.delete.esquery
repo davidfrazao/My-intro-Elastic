@@ -1,0 +1,11 @@
+
+# 000-logstash-input-file-json-to-elastic-index-creation-without-es-timestamp-es-template-es-ilm-es-rollover
+
+DELETE /index-without-timestamp-template-ilm-rollover
+
+DELETE /index-with-timestamp-iso8601-without-template-ilm-rollover
+
+DELETE /index-with-timestamp*
+
+DELETE /index*
+
