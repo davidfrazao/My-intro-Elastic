@@ -5,7 +5,7 @@ services:
     volumes:
       - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
       - ./logstash.yml:/usr/share/logstash/config/logstash.yml
-      - ../../../output-log-json/10.000/timestamp_yes/access_log.json:/usr/share/logstash/logs/log.json
+      - ../../../../output-log-json/10.000/timestamp_yes/access_log.json:/usr/share/logstash/logs/log.json
     environment:
       - ELASTICSEARCH_HOST=es01
       - ELASTICSEARCH_PORT=9200

@@ -1,0 +1,3 @@
+```password
+portainer2025#
+```

@@ -1,9 +1,10 @@
 version: "2.2"
 
 services:
-
   cerebro:
-    image: lmenezes/cerebro:0.9.4
+    build:
+      context: .
+      dockerfile: Dockerfile.cerebro
     container_name: cerebro
     ports:
       - "9000:9000"
@@ -18,3 +19,4 @@ networks:           # This section defines custom networks for use in a Docker C
   elk-docker:       # This is the name of the network your services will connect to.
     external: true  # Tells Docker Compose not to create this network. 
                     # It must already exist (created outside the current docker-compose.yml context).
+

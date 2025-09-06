@@ -1,0 +1,68 @@
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.0.0
+    container_name: es01
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - http.cors.enabled=true
+      - http.cors.allow-origin=http://127.0.0.1:8081
+      - http.cors.allow-headers=X-Requested-With,Content-Type,Content-Length,Authorization
+      - http.cors.allow-credentials=true
+    ports:
+      - "9200:9200"
+    volumes:
+      - ./esdata:/usr/share/elasticsearch/data
+    networks:
+      - elk-docker
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.0.0
+    container_name: kibana
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+    networks:
+      - elk-docker
+
+  luke:
+    build: .
+    container_name: ubuntu_vnc
+    environment:
+      VNC_PASSWORD: StrongPassword
+      HTTP_PASSWORD: SecurePassword
+      # RESOLUTION: 1280x800          # <--- set screen size here
+      RESOLUTION: 1920x1080
+    ports:
+      - "6080:80"
+      - "5900:5900"
+    volumes:
+      - ./luke:/root/luke       # mount your luke.jar
+      - ./esdata:/mnt/esdata:ro
+    restart: unless-stopped
+    networks:
+      - elk-docker
+
+  desktop:
+    image: dorowu/ubuntu-desktop-lxde-vnc
+    container_name: desktop
+    environment:
+      - VNC_PASSWORD=StrongPassword
+    ports:
+      - "8080:80"    # for browser access
+      - "5901:5900"  # for VNC client access
+    depends_on:
+      - luke
+    command: /bin/sh -c "sleep 8 && lxterminal -e 'vncviewer ubuntu_vnc:5900 || bash'"
+    # You can also install vncviewer tools if not present by overriding entrypoint
+    networks:
+      - elk-docker
+
+networks:           # This section defines custom networks for use in a Docker Compose file.
+  elk-docker:       # This is the name of the network your services will connect to.
+    external: true  # Tells Docker Compose not to create this network. 
+                    # It must already exist (created outside the current docker-compose.yml context).
+

@@ -1,0 +1,14 @@
+FROM lmenezes/cerebro:0.9.4
+
+USER root
+
+# Fix Stretch repositories (EOL → archive.debian.org)
+RUN sed -i 's/deb.debian.org/archive.debian.org/g' /etc/apt/sources.list \
+ && sed -i 's|security.debian.org|archive.debian.org/|g' /etc/apt/sources.list \
+ && sed -i '/stretch-updates/d' /etc/apt/sources.list \
+ && apt-get update \
+ && apt-get install -y --no-install-recommends curl \
+ && rm -rf /var/lib/apt/lists/*
+
+# Drop back to cerebro user
+USER 1000
