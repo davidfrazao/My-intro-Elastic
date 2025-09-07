@@ -83,6 +83,14 @@ services:
       - xpack.license.self_generated.type=${LICENSE}
       - xpack.ml.use_auto_machine_memory_percent=true
       - action.destructive_requires_name=false # override this safety mechanism -delete *
+      # Due to Elasticvue , requirement CORS
+      # Enable CORS support
+      - http.cors.enabled: true
+      # Allow requests only from Elasticvue (running on 127.0.0.1:8081)
+      - http.cors.allow-origin: "http://127.0.0.1:8081"
+      # If your cluster requires authentication, allow browsers to send auth headers
+      - http.cors.allow-headers: X-Requested-With,Content-Type,Content-Length,Authorization
+      - http.cors.allow-credentials: true
     mem_limit: ${MEM_LIMIT}
     ulimits:
       memlock:

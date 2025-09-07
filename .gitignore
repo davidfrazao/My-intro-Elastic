@@ -1,2 +1,4 @@
 .obsidian/
-.obsidian/
+
+# elastic data 
+./lessons/02-How-data-Is-stored_in_Elasticsearch/02-docker-compose/esdata/
