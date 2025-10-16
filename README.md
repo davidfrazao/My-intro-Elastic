@@ -3,26 +3,70 @@ Elasticsearch training
 
 ![Attention](./images/im_progress.png)
 
-# Requirements:
+### Requirements:
 OS:
 - OS : Windows 11
 - PC with 16 Gb RAM
-- WSL Ubuntu
+
+### Please Install 
+- WSL Ubuntu (ubuntu 24.04 )
+  
+- Update packages
+  ```
+  sudo apt update
+  sudo apt upgrade -y
+  ```
 - Docker in WSL - install
-- Docker compose - install
+  ```
+  sudo apt install docker-ce
+  ```
+- Docker in WSL - verify
+  ```
+  sudo systemctl status docker
+  or
+  docker --version
+  or 
+  docker version
+  ```
+
+- Docker compose - install 
+  ```
+  sudo apt install docker-compose
+  ```
+  - After that install:
+        Use docker compose up (✅ new plugin)
+
+- Docker compose - Verify 
+  ```
+  docker-compose --version
+  or 
+  docker compose version # new plugin
+  ```
+
 
 Vscode:
-- extentions:
-    - [Dev Container](https://marketplace.visualstudio.com/items?itemName=cweijan.vscode-database-client2)
-    - [Docker compose](https://marketplace.visualstudio.com/items?itemName=p1c2u.docker-compose)
-    - [Elasticsearch Developer tools](https://marketplace.visualstudio.com/items?itemName=crasnam.elasticdeveloper)
-    - [Database client](https://marketplace.visualstudio.com/items?itemName=cweijan.vscode-database-client2)
-    - [Peacock](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock)
+
+- Extentions: Importantes
+    - [ms-vscode-containers](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker)
+    - [ms-vscode-remote-wsl](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl)
+    - [ms-vscode-excalidraw-editor](https://marketplace.visualstudio.com/items?itemName=pomdtr.excalidraw-editor)
+    - [ms-vscode-open-folder-in-new-vscode](https://marketplace.visualstudio.com/items?itemName=rajratnamaitry.open-folder-in-new-vscode)
+    - [ms-vscode-code-runner](https://marketplace.visualstudio.com/items?itemName=formulahendry.code-runner)
+
+- Extention: Extra
+    - [vscode-peacock](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock)
+    - [HashiCorp.terraform](https://marketplace.visualstudio.com/items?itemName=HashiCorp.terraform)
+ 
+- Extention: Python
+    - [ms-python.python](https://marketplace.visualstudio.com/items?itemName=ms-python.python)
+    - [ms-python.debugpy](https://marketplace.visualstudio.com/items?itemName=ms-python.debugpy)
+    - [ms-python.vscode-pylance](https://marketplace.visualstudio.com/items?itemName=ms-python.vscode-pylance)
+    - [ms-python.vscode-python-envs](https://marketplace.visualstudio.com/items?itemName=ms-python.vscode-python-envs)
 
 # During 
 - 6 to 7 Hours
 
-## 01 - What is Elasticsearch?
+## 01-01 - lesson - 0-preparation-env 
 
 - How to run a Elasticseatch docker image - One node.
 - How to config some parameters in Elasticsearch.
@@ -30,6 +74,11 @@ Vscode:
     - Kibana
     - Cerebro 
     - ElasticVue
+    - grafana
+    - Elasticsearch exporter
+
+## 01-02 - lesson - 1-User-cases
+
 
 ## [02 - Function diagram of data flux as logs](./lessons/02-Function-diagram-of-data-flux-as-logs.md)
 
@@ -42,52 +91,3 @@ Overall diagram.
 
 ![Elastic-model](./images/elastic-model.png)
 
-## 04 - Unstructure and structure log
-
-## 05 - Possible way to write to Elasticsearch
-
-- Timestamp
-- Template Logstash
-- Template Elasticsearch
-- Ilm
-- Rollover
-
-
-## 06 - Possible way to write to Elasticsearch - basic - only index
-
-- Api - create a create index and add documents.
-- Logstash - simple
-    - Timestamp ( with and without).
-    - Template Logstash ( with and without).
-    - Template Elasticsearch ( with and without).
-
-## 07 - Possible way to write to Elasticsearch - index versus datasteam 
-
-- Logstash basic example
-
-## 08 - Possible way to write to Elasticsearch - index and datasteam 
-
-- Logstash example
-    - Ilm ( with and without).
-    - Rollover ( with and without).
-
-## 09 - Mapping
-
-## 10 - Field text versus keyword
-
-## 11 - What is a cluster
-
-## 12 - shards
-
-## 13 - Unstructure and structure log
-
-## 14 - logstash 
-
-## 15 - Kibana
-
-## 16 - Licences
-
-## 17 - Best pratices
-
-06
-David Frazao
