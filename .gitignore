@@ -11,6 +11,6 @@
 /docker-compose-main/elasticsearch_3_nodes_with_certs/data/grafana/data
 /docker-compose-main/elasticsearch_3_nodes_with_certs/data/prometheus/data
 # elastcisearch
-/docker-compose-main/elasticsearch_3_nodes_with_certs/data/elasticsearch/data-es01/
-/docker-compose-main/elasticsearch_3_nodes_with_certs/data/elasticsearch/data-es02/
-/docker-compose-main/elasticsearch_3_nodes_with_certs/data/elasticsearch/data-es03/
+/docker-compose-main/elasticsearch_3_nodes_with_certs/data-es01/
+/docker-compose-main/elasticsearch_3_nodes_with_certs/data-es02/
+/docker-compose-main/elasticsearch_3_nodes_with_certs/data-es03/
