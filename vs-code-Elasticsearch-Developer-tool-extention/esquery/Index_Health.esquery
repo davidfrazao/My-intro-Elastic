@@ -1,0 +1,3 @@
+source: https://gokuldevops.medium.com/essential-elasticsearch-commands-for-cluster-health-troubleshooting-efk-stack-issues-ca35ea82dfbd
+
+GET _cat/indices?v

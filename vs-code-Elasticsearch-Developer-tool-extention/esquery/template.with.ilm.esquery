@@ -1,0 +1,25 @@
+PUT _index_template/test-data-stream
+{
+  "priority": 500,
+  "template": {
+    "settings": {
+      "index": {
+        "lifecycle": {
+          "name": "logstash-file-json-to-elastic-data-stream-base-on-ilm",
+          "rollover_alias": "test_data_stream"
+        },
+        "mode": "standard"
+      }
+    }
+  },
+  "index_patterns": [
+    "test-data-stream*"
+  ],
+  "data_stream": {
+    "hidden": false,
+    "allow_custom_routing": false
+  },
+  "composed_of": [],
+  "ignore_missing_component_templates": [],
+  "allow_auto_create": true
+}

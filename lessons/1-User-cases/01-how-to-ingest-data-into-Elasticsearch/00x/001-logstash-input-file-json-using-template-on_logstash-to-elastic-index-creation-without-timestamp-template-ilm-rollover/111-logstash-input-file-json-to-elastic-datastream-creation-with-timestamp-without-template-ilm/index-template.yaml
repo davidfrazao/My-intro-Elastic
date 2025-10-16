@@ -1,0 +1,30 @@
+{
+  "index_templates" : [
+    {
+      "name" : "access_template",
+      "index_template" : {
+        "index_patterns" : [
+          "test-data-stream*"
+        ],
+        "template" : {
+          "settings" : {
+            "index" : {
+              "number_of_shards" : "1",
+              "number_of_replicas" : "5",
+              "index.lifecycle.name": "testpolicy"
+            }
+          },
+          "mappings" : {
+          ...
+          }
+        },
+        "composed_of" : [ ],
+        "priority" : 500,
+        "version" : 1,
+        "data_stream" : {
+          "hidden" : false
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+0- clean if needed
+
+delete: 
+./data/prometheus/data
+./data/grafana/data
+
+
+1 - run docker compose: ./docker-compose-main/elasticsearch_3_nodes_with_certs
+
+2- check: 
+### links
+### Promtheus
+http://127.0.0.1:9091
+### Prometheus - metrics
+http://127.0.0.1:9091/metrics
+### Grafana 
+http://127.0.0.1:3001
+create a user: admin pass:admin
+### Grafana - metrics
+http://127.0.0.1:3000/metrics
+### kibana
+http://127.0.0.1:5601
+### Elastiscearch 
+https://elastic:elastic@127.0.0.1:19200
+https://elastic:elastic@127.0.0.1:19201
+https://elastic:elastic@127.0.0.1:19202
+
+### Elasticsearch exporter
+http://127.0.0.1:9114
+### Elasticsearch exporter
+http://127.0.0.1:9114/metrics
+
+3- check prometheus scraping
+change to time interval
+
+4- add dashboard
+Get the ID from https://grafana.com/grafana/dashboards/2322-elasticsearch/ ( datasource as Prometheus)
