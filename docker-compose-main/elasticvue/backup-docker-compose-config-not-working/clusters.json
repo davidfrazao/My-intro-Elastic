@@ -1,6 +1,0 @@
-[
-  { "name": "ES-DOCKER-ES-Index-Inverted", "uri": "http://127.0.0.1:9200" },
-  { "name": "ES-DOCKER-ES01-3-nodes", "uri": "https://es01:9200", "username": "elastic", "password": "elastic" },
-  { "name": "ES-DOCKER-ES02-3-nodes", "uri": "https://es02:9200", "username": "elastic", "password": "elastic" },
-  { "name": "ES-DOCKER-ES03-3-nodes", "uri": "https://es03:9200", "username": "elastic", "password": "elastic" }
-]
