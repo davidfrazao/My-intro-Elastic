@@ -1,6 +1,6 @@
 .obsidian/
 
-# elastic data 
+# data 
 /lessons/02-How-data-Is-stored_in_Elasticsearch/02-docker-compose/esdata/
 /docker-compose-main/elasticsearch_1_node_no_pass/data/
 /docker-compose-main/elasticsearch_3_nodes_with_certs/data/
