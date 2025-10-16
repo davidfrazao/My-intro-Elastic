@@ -1,4 +1,3 @@
-[2025-07-27 00:32:45] INFO: User 9783 logged in from 127.0.0.1
 [2025-07-27 00:32:45] INFO: User 28484 logged in from 127.0.0.1
 [2025-07-27 00:32:45] INFO: User 24718 logged in from 127.0.0.1
 [2025-07-27 00:32:45] INFO: User 12106 logged in from 127.0.0.1

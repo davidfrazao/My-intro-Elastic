@@ -71,7 +71,7 @@ services:
     image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
     volumes:
       - certs:/usr/share/elasticsearch/config/certs
-      - esdata01:/usr/share/elasticsearch/data
+      - ${PWD}/docker-compose-main/elasticsearch_3_nodes_with_certs/data-es01:/usr/share/elasticsearch/data
     ports:
       - "${ES_01_PORT}:9200"
     environment:
@@ -125,7 +125,8 @@ services:
     image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
     volumes:
       - certs:/usr/share/elasticsearch/config/certs
-      - esdata02:/usr/share/elasticsearch/data
+      - ${PWD}/docker-compose-main/elasticsearch_3_nodes_with_certs/data-es02:/usr/share/elasticsearch/data
+      
     ports:
       - "${ES_02_PORT}:9200"
     environment:
@@ -179,7 +180,7 @@ services:
     image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
     volumes:
       - certs:/usr/share/elasticsearch/config/certs
-      - esdata03:/usr/share/elasticsearch/data
+      - ${PWD}/docker-compose-main/elasticsearch_3_nodes_with_certs/data-es03:/usr/share/elasticsearch/data
     ports:
       - "${ES_03_PORT}:9200"
     environment:
@@ -319,12 +320,12 @@ services:
 volumes:
   certs:
     driver: local
-  esdata01:
-    driver: local
-  esdata02:
-    driver: local
-  esdata03:
-    driver: local
+  # esdata01:
+  #   driver: local
+  # esdata02:
+  #   driver: local
+  # esdata03:
+  #   driver: local
   kibanadata:
     driver: local
 
