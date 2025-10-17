@@ -14,3 +14,7 @@
 /docker-compose-main/elasticsearch_3_nodes_with_certs/data-es01/
 /docker-compose-main/elasticsearch_3_nodes_with_certs/data-es02/
 /docker-compose-main/elasticsearch_3_nodes_with_certs/data-es03/
+
+# vscode
+.vscode/
+.history/
