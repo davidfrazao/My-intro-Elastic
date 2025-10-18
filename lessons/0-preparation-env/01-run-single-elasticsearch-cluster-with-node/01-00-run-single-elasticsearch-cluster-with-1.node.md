@@ -20,7 +20,7 @@ create a user: admin pass:admin
 ### Grafana - metrics
 http://127.0.0.1:53000/metrics
 ### kibana
-http://127.0.0.1:58889
+http://127.0.0.1:55601
 ### Elastiscearch 
 http://127.0.0.1:58881
 ### Elasticsearch exporter

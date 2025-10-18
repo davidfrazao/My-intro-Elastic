@@ -1,0 +1,253 @@
+version: "3.9"
+services:
+
+  ## prometheus
+  prometheus-fix-perms:
+    image: busybox:1.36
+    command: ["sh","-lc","chown -R ${UID}:${GID} /prometheus && chmod -R u+rwX,g+rwX /prometheus"]
+    volumes:
+      - prometheus-data:/prometheus
+    restart: "no"
+
+  prometheus-es-1-node:
+    image: quay.io/prometheus/prometheus:v3.6.0
+    container_name: prometheus-es-1-node
+    user: "${UID}:${GID}"                     # run as host UID:GID to avoid perms issues
+    ports:
+      - "${PROM_PORT:-59090}:9090"
+    volumes:
+      # CONFIG: bind-mount read-only
+      - ${PWD}/docker-compose-main/elasticsearch_1_node_no_pass/data/prometheus/etc:/etc/prometheus:ro
+      # DATA: prefer a named volume for portability & fewer permission headaches
+      - prometheus-data:/prometheus
+      # If you MUST bind-mount data instead, comment the named volume above and use:
+      # - ./docker-compose-main/elasticsearch_1_node_no_pass/data/prometheus/data:/prometheus
+      # (On SELinux hosts, append :Z to mounts)
+    environment:
+      UID: "${UID}"
+      GID: "${GID}"
+      PROM_PORT: "${PROM_PORT}"
+      PROM_RETENTION_TIME: "${PROM_RETENTION_TIME}"
+      PROM_RETENTION_SIZE: "${PROM_RETENTION_SIZE}" 
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --web.enable-admin-api
+      - --storage.tsdb.retention.time=${PROM_RETENTION_TIME:-15d}
+      - --storage.tsdb.retention.size=${PROM_RETENTION_SIZE:-10GB}
+      # optional features:
+      # - --enable-feature=exemplar-storage
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:9090/-/ready"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    restart: unless-stopped
+    networks:
+      - elk-docker
+    # ---- Resource limits (plain Docker Compose) ----
+    mem_limit: 512M             # <── ensures container never exceeds 512 MB RAM (Bare minimum for small local setup)
+    # mem_limit: 1g              # <── ensures container never exceeds 1 GB RAM (Avoids OOM and mmap issues)
+    
+    cpus: "1.0"           # cap CPU to ~1 vCPU
+    # Alternative (older engines): uncomment instead of `cpus`
+    # cpu_quota: 100000
+    # cpu_period: 100000
+
+     
+## grafana
+  grafana-fix-perms:
+    image: busybox:1.36
+    command: ["sh","-lc","chown -R ${UID:-1000}:${GID:-1000} /var/lib/grafana && chmod -R u+rwX,g+rwX /var/lib/grafana"]
+    volumes:
+      - grafana-data:/var/lib/grafana
+    restart: "no"
+
+  grafana-es-1-node:
+    image: grafana/grafana:12.2.0
+    container_name: grafana-es-1-node
+    user: "${UID:-1000}:${GID:-1000}"   # good: run as your host user
+    environment:
+      # optional bootstrap (first run only)
+      # GF_SECURITY_ADMIN_USER: admin
+      # GF_SECURITY_ADMIN_PASSWORD: admin
+      GRAFANA_PORT: "${GRAFANA_PORT}"
+    ports:
+      - "${GRAFANA_PORT:-53000}:3000"
+    volumes:
+      # persist data correctly
+      - grafana-data:/var/lib/grafana
+      # your config/provisioning (if any)
+      - ${PWD}/docker-compose-main/elasticsearch_1_node_no_pass/data/grafana/etc:/etc/grafana
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 1G
+        reservations:
+          cpus: "0.5"
+          memory: 512M
+    networks:
+      - elk-docker
+    depends_on:
+      - prometheus-es-1-node
+
+
+# elasticsearch
+  elasticsearch-1-node-no-pass-fix-perms:
+    image: busybox:1.36
+    command: ["sh","-lc","chown -R ${UID}:${GID} /usr/share/elasticsearch/data && chmod -R u+rwX,g+rwX /usr/share/elasticsearch/data"]
+    volumes:
+      - elasticsearch-data-1-node:/usr/share/elasticsearch/data
+    restart: "no"
+
+  elasticsearch-1-node-no-pass:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.9.0
+    container_name: elasticsearch-1-node-no-pass
+    depends_on:
+      - elasticsearch-1-node-no-pass-fix-perms
+    environment:
+      - cluster.name=docker-cluster-elasticsearch
+      - xpack.security.enabled=false
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - discovery.type=single-node
+      - cluster.routing.allocation.disk.threshold_enabled=true
+      - cluster.routing.allocation.disk.watermark.low=2gb
+      - cluster.routing.allocation.disk.watermark.high=1gb
+      - cluster.routing.allocation.disk.watermark.flood_stage=512mb
+      - http.cors.enabled=true
+      - http.cors.allow-origin=http://127.0.0.1:8081
+      - http.cors.allow-headers=X-Requested-With,Content-Type,Content-Length,Authorization
+      - http.cors.allow-credentials=true
+    mem_limit: 1g
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    cap_add:
+      - IPC_LOCK
+    volumes:
+      - elasticsearch-data-1-node:/usr/share/elasticsearch/data
+    ports:
+      - "${ES_HTTP_PORT:-59200}:9200"
+      - "${ES_TRANSPORT_PORT:-59300}:9300"
+    networks:
+      - elk-docker
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:9200/_cluster/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 1G
+        reservations:
+          cpus: "0.5"
+          memory: 768M
+
+## Kibana
+  kibana-es.1node-fix-perms:
+    image: busybox:1.36
+    command: ["sh","-lc","chown -R ${UID}:${GID} /usr/share/elasticsearch/data && chmod -R u+rwX,g+rwX /usr/share/elasticsearch/data"]
+    volumes:
+      - elasticsearch-data-1-node:/usr/share/elasticsearch/data
+    restart: "no"
+  kibana-es.1.node:
+    container_name: kibana-es.1.node
+    image: docker.elastic.co/kibana/kibana:8.9.0
+    user: "${UID}:${GID}"                # run as host UID:GID to avoid perms issues
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch-1-node-no-pass:9200
+      - SERVER_NAME=kibana
+      - SERVER_HOST=0.0.0.0
+    ports:
+      - "${KIBANA_PORT:-55601}:5601"
+    depends_on:
+      - elasticsearch-1-node-no-pass
+    volumes:
+      # Mount a local config file (optional)
+      # - ./kibana.yml:/usr/share/kibana/config/kibana.yml:ro
+      # Optional: persist logs or other Kibana runtime data
+      - kibana-data:/usr/share/kibana/data
+    networks:
+      - elk-docker
+
+## elasticsearch_exporter  
+
+  # Optional: fix permissions if you plan to run exporter as non-root and write into the volume
+  elasticsearch_exporter-es-1-node-fix-perms:
+    image: busybox:1.36
+    command: ["sh","-lc","mkdir -p /elasticsearch_exporter && chown -R ${UID}:${GID} /elasticsearch_exporter && chmod -R u+rwX,g+rwX /elasticsearch_exporter"]
+    volumes:
+      - elasticsearch-exporter-data:/elasticsearch_exporter
+    restart: "no"
+
+  elasticsearch_exporter-es-1-node:
+    image: quay.io/prometheuscommunity/elasticsearch-exporter:latest
+    container_name: elasticsearch_exporter-es-1-node
+    # Run as non-root (65534 = nobody)
+    user: "${UID}:${GID}" 
+    environment:
+      UID: "${UID}"
+      GID: "${GID}"
+      ES_EXPORTER_PORT: "${ES_EXPORTER_PORT}"
+    depends_on:
+      - elasticsearch_exporter-es-1-node-fix-perms
+      - elasticsearch-1-node-no-pass
+    volumes:
+      - elasticsearch-exporter-data:/elasticsearch_exporter
+      # Example future use:
+      # - ./certs:/elasticsearch_exporter/certs:ro
+      # - ./flags:/elasticsearch_exporter/flags:ro
+    command:
+      - '--es.uri=http://elasticsearch-1-node-no-pass:9200'
+      - '--es.indices'
+      - '--es.all'
+      - '--es.indices_mappings'
+      - '--es.aliases'
+      - '--es.shards'
+      - '--es.indices_settings'
+      - '--es.timeout=10s'
+      - '--web.listen-address=:9114'
+      # If you ever add TLS:
+      # - '--es.ca=/elasticsearch_exporter/certs/ca.crt'
+    restart: always
+    ports:
+      - "${ES_EXPORTER_PORT:-59114}:9114"
+    networks:
+      - elk-docker
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:9114/metrics | head -n1 >/dev/null || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: 128M
+        reservations:
+          cpus: "0.1"
+          memory: 64M
+
+# volumes
+volumes:
+  prometheus-data:
+  grafana-data:
+  elasticsearch-data-1-node:
+  kibana-data:
+  elasticsearch-exporter-data:
+
+networks:           # This section defines custom networks for use in a Docker Compose file.
+  elk-docker:       # This is the name of the network your services will connect to.
+    external: true  # Tells Docker Compose not to create this network. 
+                    # It must already exist (created outside the current docker-compose.yml context).

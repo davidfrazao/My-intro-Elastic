@@ -1,14 +1,29 @@
 version: "3.9"
 
 services:
+  elasticvue-init-perms:
+    image: busybox:1.36
+    user: "0:0"
+    command: >
+      sh -lc "mkdir -p /app/data"
+    volumes:
+      - elasticvue-data:/app/data 
+    restart: "no"
+    
   elasticvue:
     image: cars10/elasticvue:latest
     container_name: elasticvue
+    user: "${UID}:${GID}"
     ports:
-      - "8081:8080"
+      - "${ES_ELASTICVUE_PORT:-8081}:8080"
     restart: unless-stopped
     networks:
       - elk-docker
+    volumes:
+      - elasticvue-data:/app/data   # persistent volume mount (you can change path if needed)
+
+volumes:
+  elasticvue-data:   # named volume for persistent storage
 
 networks:           # This section defines custom networks for use in a Docker Compose file.
   elk-docker:       # This is the name of the network your services will connect to.

@@ -1,22 +1,63 @@
-version: "2.2"
-
+version: "3.9"
 services:
+  cerebro-init-perms:
+    image: busybox:1.36
+    user: "0:0"
+    command: >
+      sh -lc "mkdir -p /data /logs /tmpdir &&
+              chown -R ${UID}:${GID} /data /logs /tmpdir &&
+              chmod -R u+rwX,g+rwX /data /logs /tmpdir"
+    volumes:
+      - cerebro-data:/data
+      - cerebro-logs:/logs
+      - cerebro-tmp:/tmpdir
+    restart: "no"
+
   cerebro:
-    build:
-      context: .
-      dockerfile: Dockerfile.cerebro
+    image: lmenezes/cerebro:0.9.4
     container_name: cerebro
+    user: "${UID}:${GID}"
+    depends_on:
+      cerebro-init-perms:
+        condition: service_completed_successfully
+
     ports:
       - "9000:9000"
+
     environment:
-      - JAVA_OPTS=-Xms512m -Xmx512m
+      JAVA_OPTS: "-Xms256m -Xmx256m -Dhttp.address=0.0.0.0 -Dplay.server.pidfile.path=/dev/null -Ddb.default.url=jdbc:sqlite:/var/lib/cerebro/cerebro.db -Dslick.dbs.default.db.url=jdbc:sqlite:/var/lib/cerebro/cerebro.db -Dlogger.resource=logback.xml -Dorg.sqlite.tmpdir=/var/lib/cerebro/tmp -Djava.io.tmpdir=/var/lib/cerebro/tmp"
+      UID: "${UID}"
+      GID: "${GID}"
+
     volumes:
-      - ./cerebro.conf:/opt/cerebro/conf/application.conf
+      - ./cerebro.conf:/opt/cerebro/conf/application.conf:ro
+      - cerebro-data:/var/lib/cerebro
+      - cerebro-logs:/opt/cerebro/logs
+      - cerebro-tmp:/var/lib/cerebro/tmp
+
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      driver: "json-file"
+      options: { max-size: "10m", max-file: "3" }
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:9000"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    mem_limit: 512m
+    cpus: "0.5"
+    restart: unless-stopped
     networks:
       - elk-docker
+volumes:
+  cerebro-data:    # Writable volume for SQLite database
+  cerebro-logs:    # Writable volume for Cerebro logs
+  cerebro-tmp:     # Exec-capable temp for SQLite/JVM
 
-networks:           # This section defines custom networks for use in a Docker Compose file.
-  elk-docker:       # This is the name of the network your services will connect to.
-    external: true  # Tells Docker Compose not to create this network. 
-                    # It must already exist (created outside the current docker-compose.yml context).
-
+networks:
+  elk-docker:
+    external: true
