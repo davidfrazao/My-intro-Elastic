@@ -1,0 +1,18 @@
+{
+  "index_patterns": ["01-04-ingest-json-log-file*"],
+  "priority": 10,
+  "version": 1,
+  "_meta": {
+    "description": "Logstash pipeline 01-04: 1 primary, 0 replicas; ECS-ish fields"
+  },
+  "template": {
+    "settings": {
+      "number_of_shards": 1,
+      "number_of_replicas": 0
+    },
+    "mappings": {
+      "properties": {}
+    },
+    "aliases": {}
+  }
+}

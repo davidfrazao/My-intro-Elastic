@@ -1,0 +1,6 @@
+# log.level: debug
+xpack.monitoring.elasticsearch.hosts:
+- https://es01:9200
+xpack.monitoring.elasticsearch.password: elastic
+xpack.monitoring.elasticsearch.ssl.verification_mode: none
+xpack.monitoring.elasticsearch.username: elastic

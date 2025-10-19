@@ -2,14 +2,17 @@
 
 # data 
 /lessons/02-How-data-Is-stored_in_Elasticsearch/02-docker-compose/esdata/
+
 # 1 node
 /docker-compose-main/elasticsearch_1_node_no_pass/data/elasticsearch/
 /docker-compose-main/elasticsearch_1_node_no_pass/data/grafana/data
 /docker-compose-main/elasticsearch_1_node_no_pass/data/prometheus/data
+
 # 
 /docker-compose-main/elasticsearch_3_nodes_with_certs/data/elasticsearch/
 /docker-compose-main/elasticsearch_3_nodes_with_certs/data/grafana/data
 /docker-compose-main/elasticsearch_3_nodes_with_certs/data/prometheus/data
+
 # elastcisearch
 /docker-compose-main/elasticsearch_3_nodes_with_certs/data-es01/
 /docker-compose-main/elasticsearch_3_nodes_with_certs/data-es02/

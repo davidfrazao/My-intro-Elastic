@@ -69,9 +69,23 @@ chmod +x http_access_log_simulator_output_json.sh
 ```
 
 # ngnix
+-t now (default if omitted): use current UTC time
+
+-t 2025-10-19: use that date at 00:00:00Z
+
+-t "2025-10-19 14:30:00" or full ISO string: use that exact moment (UTC)
+
+-i X ns ( increase time btw each line) 
+
+5000000 ns ->  0.005 s
+50000000 ns ->  0.05 s
+500000000 ns ->  0.5 s
+
+
 chmod +x create_log_output_json_nginx.sh
-./create_log_output_json_nginx.sh  -n access.log -l 10000 -d../../output-log-json/10.000/nginx
 
-./create_log_output_json_nginx.sh  -n access.log -l 50000 -d../../output-log-json/50.000/nginx
+./create_log_output_json_nginx.sh  -n access.log -l 10000 -d../../output-log-json/10.000/nginx -t 2025-08-19 -i 50000000
 
-./create_log_output_json_nginx.sh  -n access.log -l 100000 -d../../output-log-json/100.000/nginx
+./create_log_output_json_nginx.sh  -n access.log -l 50000 -d../../output-log-json/50.000/nginx -t 2025-08-19 -i 50000000
+
+./create_log_output_json_nginx.sh  -n access.log -l 100000 -d../../output-log-json/100.000/nginx -t 2025-08-19 -i 50000000

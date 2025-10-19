@@ -1,0 +1,30 @@
+version: '3.7'
+services:
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.18.4
+    environment:
+      ES_HOST: tls-private-CA-node-es-8-1
+      ES_PORT: 9200
+      ES_USER: elastic
+      ES_PASS: AHTgDg4jcT-kE06LuJ9-  # Change to your actual password
+    volumes:
+      - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+      - ./logstash.yml:/usr/share/logstash/config/logstash.yml
+      - ./certs/logstash.crt:/usr/share/logstash/config/logstash.crt
+      - ./certs/logstash.key:/usr/share/logstash/config/logstash.key
+      - ./certs/root_certificate_public.crt:/usr/share/logstash/config/rootCA.crt
+      - ../output-xxx-json/access_log.json:/usr/share/logstash/logs/log.json
+  
+  cerebro:
+    image: lmenezes/cerebro:0.9.4
+    container_name: cerebro
+    ports:
+      - "9000:9000"
+    environment:
+      - JAVA_OPTS=-Xms512m -Xmx512m
+    networks:
+      - elk
+
+networks:
+  elk:
+    driver: bridge
