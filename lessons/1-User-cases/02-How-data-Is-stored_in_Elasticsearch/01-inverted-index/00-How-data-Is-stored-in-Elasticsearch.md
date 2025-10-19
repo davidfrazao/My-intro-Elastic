@@ -11,6 +11,15 @@ tags:
 	- Lukas application to read a invert index in Elasticsearch ( Only with version 7 of Elasticsaerch)
 	- Kibana
 	- vnc
+## links 
+# Elasticsearch
+http://127.0.0.1:9200
+# Kibana
+http://127.0.0.1:5601
+## luke 
+http://127.0.0.1:6080
+
+http://127.0.0.1:5900
 
 ## 🎯Goal of the exercise
 
@@ -31,45 +40,50 @@ On the Vscode, select the docker-compose.yml file on click on the right of your 
 
 How to check that the docker a running as expected, simple Vscode extention named "Container" and see in the docker images states.
 
-<img src="../../images/vscode-extention-container.png" alt="Alt Text" width="450" height="550">
+<img src="../../../../images/vscode-extention-container.png" alt="Alt Text" width="450" height="550">
 
 ### 2 - access vnc on web browser
 
 Link 
-[access vnc with lukas application](Http://localhost:6080)
+[access vnc with lukas application](Http://127.0.0.1:6080)
 
 if the browser request user and password: 
 
 - user: root 
-- password: StrongPassword
+- password: SecurePassword
 
 next request on the password:
 
 - password: StrongPassword
 
-you need to pass the command line to execute the lukas application, due to the web broswer interface you need to copy the command "java -jar /root/luke/luke.jar" on the vnc clipboard.
+you need to pass the command line to execute the lukas application, due to the web broswer interface you need to copy the command: 
+
+```
+java -jar /root/luke/luke.jar
+```
+ on the vnc clipboard.
 
 
-<img src="../../images/vnc-clipboard.png" alt="Alt Text" width="250" height="200">
+<img src="../../../../images/vnc-clipboard.png" alt="Alt Text" width="550" height="400">
 
 next open the terminal 
 
 
-<img src="../../images/vnc-terminal.png" alt="Alt Text" width="250" height="200">
+<img src="../../../../images/vnc-terminal.png" alt="Alt Text" width="550" height="400">
 
 paste the command line
 
 
-<img src="../../images/vnc-paste.png" alt="Alt Text" width="250" height="200">
+<img src="../../../../images/vnc-paste.png" alt="Alt Text" width="550" height="400">
 
 and execute ( wait for the application to open)
 
 
-<img src="../../images/vnc-execute.png" alt="Alt Text" width="250" height="200">
+<img src="../../../../images/vnc-execute.png" alt="Alt Text" width="550" height="400">
 
 application is up
 
-<img src="../../images/vnc-application.png" alt="Alt Text" width="350" height="400">
+<img src="../../../../images/vnc-application.png" alt="Alt Text" width="550" height="400">
 
 
 ### 3 Elasticsearch 
@@ -112,11 +126,11 @@ POST my_index/_doc
 ```
 to interact with the lukas application tools you need to the uuid of the index
 
-<img src="../../images/elastic-index-uuid.png" alt="Alt Text" width="850" height="200">
+<img src="../../../../images/elastic-index-uuid.png" alt="Alt Text" width="850" height="200">
 
 and the storage path used by Elasticsearh to quit the indexes data.
 
-<img src="../../images/elastic-path.png" alt="Alt Text" width="350" height="400">
+<img src="../../../../images/elastic-path.png" alt="Alt Text" width="350" height="400">
 
 
 data path: 
@@ -129,7 +143,7 @@ data path:
 the inverted index in the lukas application 
 
 
-<img src="../../images/lukas-inverted-index.png" alt="Alt Text" width="350" height="400">
+<img src="../../../../images/lukas-inverted-index.png" alt="Alt Text" width="550" height="500">
 
 you can also see section: 
 

@@ -1,0 +1,36 @@
+# timestamp_no
+version: '3.7'
+services:
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.18.4
+    volumes:
+      - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+      - ./logstash.yml:/usr/share/logstash/config/logstash.yml
+      - ../../../../../output-log-json/10.000/nginx/:/usr/share/logstash/logs/
+    environment:
+      - ELASTICSEARCH_HOST=es02
+      #- ELASTICSEARCH_HOST=elasticsearch-1-node-no-pass
+      - ELASTICSEARCH_PORT=9200
+      - ELASTICSEARCH_USER=elastic
+      - ELASTICSEARCH_PASSWORD=elastic
+      - ELASTICSEARCH_INDEX_NAME=nginx_access_log_10000
+      # ↓ Limit JVM heap to minimal working value
+      - LS_JAVA_OPTS=-Xms256m -Xmx256m
+      # ↓ Optional: reduce pipeline threads to minimize CPU usage
+      - PIPELINE_WORKERS=1
+      - PIPELINE_BATCH_SIZE=50
+    deploy:
+      resources:
+        limits:
+          cpus: '1'      # limit to 1 CPU core
+          memory: 512M      # limit to 512 MB RAM
+    networks:
+      - elk-docker
+
+networks:           # This section defines custom networks for use in a Docker Compose file.
+  elk-docker:       # This is the name of the network your services will connect to.
+    external: true  # Tells Docker Compose not to create this network. 
+                    # It must already exist (created outside the current docker-compose.yml context).
+
+
+    

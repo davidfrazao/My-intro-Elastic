@@ -1,11 +1,6 @@
 0- clean if needed
 
-delete: 
-./data/prometheus/data
-./data/grafana/data
-./data/data-es01
-./data/data-es02
-./data/data-es03
+
 
 1 - run docker compose: ./docker-compose-main/elasticsearch_3_nodes_with_certs
 

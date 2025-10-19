@@ -14,6 +14,16 @@ services:
       # - ELASTICSEARCH_USER=elastic
       # - ELASTICSEARCH_PASSWORD=elastic
       - ELASTICSEARCH_INDEX_NAME=logs_timestamp_yes_log_10000
+      # ↓ Limit JVM heap to minimal working value
+      - LS_JAVA_OPTS=-Xms256m -Xmx256m
+      # ↓ Optional: reduce pipeline threads to minimize CPU usage
+      - PIPELINE_WORKERS=1
+      - PIPELINE_BATCH_SIZE=50
+    deploy:
+      resources:
+        limits:
+          cpus: '1'      # limit to 1 CPU core
+          memory: 512M      # limit to 512 MB RAM
     networks:
       - elk-docker
 

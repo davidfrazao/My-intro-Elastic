@@ -17,11 +17,11 @@ services:
       - "${PROM_PORT:-59090}:9090"
     volumes:
       # CONFIG: bind-mount read-only
-      - ${PWD}/docker-compose-main/elasticsearch_1_node_no_pass/data/prometheus/etc:/etc/prometheus:ro
+      - ${PWD}/docker-compose-main/elastic_1_node_no_pass/data/prometheus/etc:/etc/prometheus:ro
       # DATA: prefer a named volume for portability & fewer permission headaches
       - prometheus-data:/prometheus
       # If you MUST bind-mount data instead, comment the named volume above and use:
-      # - ./docker-compose-main/elasticsearch_1_node_no_pass/data/prometheus/data:/prometheus
+      # - ./docker-compose-main/elastic_1_node_no_pass/data/prometheus/data:/prometheus
       # (On SELinux hosts, append :Z to mounts)
     environment:
       UID: "${UID}"
@@ -79,7 +79,7 @@ services:
       # persist data correctly
       - grafana-data:/var/lib/grafana
       # your config/provisioning (if any)
-      - ${PWD}/docker-compose-main/elasticsearch_1_node_no_pass/data/grafana/etc:/etc/grafana
+      - ${PWD}/docker-compose-main/elastic_1_node_no_pass/data/grafana/etc:/etc/grafana
     deploy:
       resources:
         limits:
@@ -111,8 +111,9 @@ services:
       - cluster.name=docker-cluster-elasticsearch
       - xpack.security.enabled=false
       - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
       - discovery.type=single-node
+      - xpack.ml.enabled=false
       - cluster.routing.allocation.disk.threshold_enabled=true
       - cluster.routing.allocation.disk.watermark.low=2gb
       - cluster.routing.allocation.disk.watermark.high=1gb
@@ -148,7 +149,7 @@ services:
       resources:
         limits:
           cpus: "1.0"
-          memory: 1G
+          memory: 2G
         reservations:
           cpus: "0.5"
           memory: 768M

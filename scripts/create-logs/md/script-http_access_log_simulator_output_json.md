@@ -67,3 +67,11 @@ chmod +x http_access_log_simulator_output_json.sh
 ./create_log_output_json_without_timestamp.sh -n 5000000 -o ../../output-log-json/500.000/timestamp_no/access_log.json
 ./create_log_output_json_without_timestamp.sh -n 10000000 -o ../../output-log-json/1.000.000/timestamp_no/access_log.json
 ```
+
+# ngnix
+chmod +x create_log_output_json_nginx.sh
+./create_log_output_json_nginx.sh  -n access.log -l 10000 -d../../output-log-json/10.000/nginx
+
+./create_log_output_json_nginx.sh  -n access.log -l 50000 -d../../output-log-json/50.000/nginx
+
+./create_log_output_json_nginx.sh  -n access.log -l 100000 -d../../output-log-json/100.000/nginx

@@ -1,0 +1,2 @@
+pipeline.batch.size: ${PIPELINE_BATCH_SIZE}
+pipeline.workers: ${PIPELINE_WORKERS}
