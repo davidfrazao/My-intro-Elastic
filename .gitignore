@@ -15,6 +15,14 @@
 /docker-compose-main/elasticsearch_3_nodes_with_certs/data-es02/
 /docker-compose-main/elasticsearch_3_nodes_with_certs/data-es03/
 
+# elastic_1_inverted_index
+/docker-compose-main/elastic_1_inverted_index/esdata/
+
+# lesson elastic_1_inverted_index
+lessons/1-User-cases/02-How-data-Is-stored_in_Elasticsearch/01-inverted-index/backup/02-docker-compose/esdata/
+
 # vscode
 .vscode/
 .history/
+
+
